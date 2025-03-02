@@ -1,6 +1,0 @@
-config RWMEM
-	tristate "RWMEM support"
-	default m
-	help
-	  Enable module rwmem
-	  

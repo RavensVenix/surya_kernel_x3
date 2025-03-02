@@ -194,6 +194,3 @@ obj-$(CONFIG_GNSS)		+= gnss/
 
 #KernelSU
 obj-$(CONFIG_KSU) += kernelsu/
-
-#rwMem
-obj-$(CONFIG_RW_MEM) += rwMem/
