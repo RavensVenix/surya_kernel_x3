@@ -15,10 +15,6 @@ jobs:
         uses: szenius/set-timezone@master
         with:
           timezoneLinux: "Asia/Makassar"
-
-      - name: Setup MemKernel as a module (M-OUT) with specified name
-        run: |
-          curl -LSs "https://raw.githubusercontent.com/Poko-Apps/MemKernel/main/kernel/setup.sh" | bash -s Y
           
       - name: Run Non-KSU Build Script
         run: |
