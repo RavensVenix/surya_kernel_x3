@@ -19,14 +19,14 @@ jobs:
       - name: Run Non-KSU Build Script
         run: |
           export KBUILD_BUILD_USER=g4hmx
-          export KBUILD_BUILD_HOST=poco-x3
+          export KBUILD_BUILD_HOST=pocox3
           source build.sh
           echo "ZIPNAME=${ZIPNAME}" >> $GITHUB_ENV
 
       - name: Run KernelSU-Next Build Script
         run: |
           export KBUILD_BUILD_USER=g4hmx
-          export KBUILD_BUILD_HOST=poco-x3
+          export KBUILD_BUILD_HOST=pocox3
           source build.sh --su
           echo "ZIPNAME_KSU=${ZIPNAME_KSU}" >> $GITHUB_ENV
 
@@ -34,10 +34,14 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Non-KSU-Artifact
-          path: ${{ env.ZIPNAME }}
+          path: |
+          ${{ env.ZIPNAME }}
+          ./out/drivers/memkernel/memkernel.ko
 
       - name: Upload KernelSU-Next Artifact
         uses: actions/upload-artifact@main
         with:
           name: KSUNext-Artifact
-          path: ${{ env.ZIPNAME_KSU }}
+          path: |
+          ${{ env.ZIPNAME_KSU }}
+          ./out/drivers/memkernel/memkernel.ko
