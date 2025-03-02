@@ -123,13 +123,11 @@ make -j$(nproc --all) LLVM=1 Image.gz dtb.img dtbo.img 2> >(tee log.txt >&2) || 
 kernel="out/arch/arm64/boot/Image.gz"
 dtb="out/arch/arm64/boot/dtb.img"
 dtbo="out/arch/arm64/boot/dtbo.img"
-module_memkernel="out/drivers/memkernel/memkernel.ko"
 
-if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ] && [ -f "$module_memkernel" ]; then
+if [ -f "$kernel" ] && [ -f "$dtb" ] && [ -f "$dtbo" ]; then
 	echo -e "\nKernel compiled successfully! Zipping up...\n"
 	cp -r $AK3_DIR AnyKernel3
 	cp $kernel $dtb $dtbo AnyKernel3
-	cp $module_memkernel AnyKernel3/MemKernel
 	cd AnyKernel3
 	git checkout master &> /dev/null
 	zip -r9 "../$ZIPNAME" * -x .git modules\* patch\* ramdisk\* README.md *placeholder
