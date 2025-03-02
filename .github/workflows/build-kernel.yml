@@ -34,14 +34,10 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: Non-KSU-Artifact
-          path: |
-            ${{ env.ZIPNAME }}
-            ./out/drivers/memkernel/memkernel.ko
+          path: ${{ env.ZIPNAME }}
 
       - name: Upload KernelSU-Next Artifact
         uses: actions/upload-artifact@main
         with:
           name: KSUNext-Artifact
-          path: |
-            ${{ env.ZIPNAME_KSU }}
-            ./out/drivers/memkernel/memkernel.ko
+          path: ${{ env.ZIPNAME_KSU }}
