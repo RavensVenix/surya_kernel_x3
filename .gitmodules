@@ -8,3 +8,6 @@
 [submodule "MemKernel"]
 	path = MemKernel
 	url = https://github.com/Poko-Apps/MemKernel.git
+[submodule "rwMem"]
+	path = rwMem
+	url = https://github.com/Yervant7/rwMem.git
