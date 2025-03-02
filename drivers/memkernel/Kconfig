@@ -1,6 +1,6 @@
 config MEMKERNEL
     tristate "Physical Mem Operation Driver"
-    default m
+    default y
     help
       Read-Write physical memory of target process.
       Also retrieves base address of any library within any target process.
