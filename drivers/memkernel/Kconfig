@@ -1,8 +1,0 @@
-config MEMKERNEL
-    tristate "Physical Mem Operation Driver"
-    default m
-    help
-      Read-Write physical memory of target process.
-      Also retrieves base address of any library within any target process.
-      Y to statically build within kernel.
-      M to build as loadable kernel module (lkm).
