@@ -5,6 +5,7 @@
 
 SECONDS=0 # builtin bash timer
 ZIPNAME="Elaina-surya-$(date '+%Y%m%d-%H%M').zip"
+ZIPNAME_KSU="Elaina-KernelSU-Next-surya-$(date '+%Y%m%d-%H%M').zip"
 TC_DIR="$(pwd)/tc/clang-20"
 AK3_DIR="$(pwd)/android/AnyKernel3"
 DEFCONFIG="surya_defconfig"
@@ -88,7 +89,7 @@ for arg in "$@"; do
 			;;
 		-s|--su)
 			ENABLE_KSU=true
-			ZIPNAME="${ZIPNAME/Elaina-surya/Elaina-KSU}"
+			ZIPNAME="${ZIPNAME_KSU/Elaina-surya/Elaina-KSU}"
 			;;
 		*)
 			echo "Unknown argument: $arg"

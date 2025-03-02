@@ -11,33 +11,33 @@ jobs:
       - name: Checkout
         uses: actions/checkout@main
 
-      - name: Setup timezone
+      - name: Setup Timezone
         uses: szenius/set-timezone@master
         with:
-          timezoneLinux: "America/Sao_Paulo"
+          timezoneLinux: "Asia/Makassar"
 
-      - name: Run standard build script
+      - name: Run Non-KSU Build Script
         run: |
-          export KBUILD_BUILD_USER=nobody
-          export KBUILD_BUILD_HOST=android-build
+          export KBUILD_BUILD_USER=g4hmx
+          export KBUILD_BUILD_HOST=poco-x3
           source build.sh
           echo "ZIPNAME=${ZIPNAME}" >> $GITHUB_ENV
 
-      - name: Run KSU build script
+      - name: Run KernelSU-Next Build Script
         run: |
-          export KBUILD_BUILD_USER=nobody
-          export KBUILD_BUILD_HOST=android-build
+          export KBUILD_BUILD_USER=g4hmx
+          export KBUILD_BUILD_HOST=poco-x3
           source build.sh --su
-          echo "ZIPNAME_KSU=${ZIPNAME}" >> $GITHUB_ENV
+          echo "ZIPNAME_KSU=${ZIPNAME_KSU}" >> $GITHUB_ENV
 
-      - name: Upload standard artifact
+      - name: Upload Non-KSU Artifact
         uses: actions/upload-artifact@main
         with:
-          name: standard-artifact
+          name: Non-KSU-Artifact
           path: ${{ env.ZIPNAME }}
 
-      - name: Upload KSU artifact
+      - name: Upload KernelSU-Next Artifact
         uses: actions/upload-artifact@main
         with:
-          name: KSU-artifact
+          name: KSUNext-Artifact
           path: ${{ env.ZIPNAME_KSU }}
