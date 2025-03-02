@@ -5513,7 +5513,7 @@ CONFIG_SBITMAP=y
 # CONFIG_STRING_SELFTEST is not set
 
 #
-# MemKernel Support
+# Signature Kernel
 #
 CONFIG_MODULES=y
 CONFIG_MODULE_FORCE_LOAD=y
