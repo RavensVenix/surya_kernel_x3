@@ -5,3 +5,6 @@
 	path = susfs4ksu
 	url = https://gitlab.com/simonpunk/susfs4ksu
 	branch = kernel-4.14
+[submodule "MemKernel"]
+	path = MemKernel
+	url = https://github.com/Poko-Apps/MemKernel.git
