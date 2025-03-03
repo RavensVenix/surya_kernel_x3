@@ -28,7 +28,12 @@ jobs:
           export KBUILD_BUILD_HOST=pocox3
           source build.sh
           echo "ZIPNAME=${ZIPNAME}" >> $GITHUB_ENV
-
+          
+      - name: Install LLVM and Clang
+        run: |
+          sudo apt update
+          sudo apt install -y clang lld
+          
       - name: Build rwMem Kernel Module
         run: |
           cd drivers/rwMem/rwMem
