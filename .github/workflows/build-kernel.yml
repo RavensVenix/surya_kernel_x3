@@ -16,6 +16,15 @@ jobs:
         with:
           timezoneLinux: "Asia/Makassar"
           
+      - name: Setup rwMem Driver
+        run: |
+          cd $GITHUB_WORKSPACE/kernel_workspace/android-kernel/drivers/
+          wget https://github.com/Yervant7/rwMem/releases/download/0.1.2/rwmem.zip
+          unzip rwmem.zip
+          cd rwmem
+          chmod +x setup.sh
+          ./setup.sh
+      
       - name: Run Non-KSU Build Script
         run: |
           export KBUILD_BUILD_USER=g4hmx
