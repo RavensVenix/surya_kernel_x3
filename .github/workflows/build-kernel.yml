@@ -19,11 +19,12 @@ jobs:
       - name: Setup rwMem Driver
         run: |
           cd drivers
+          mkdir rwmem
+          cd rwmem
           wget https://github.com/Yervant7/rwMem/releases/download/v0.5.5/rwmem.zip
           unzip rwmem.zip
-          cd rwmem
           chmod +x setup.sh
-          yes | ./setup.sh
+          ./setup.sh
       
       - name: Run Non-KSU Build Script
         run: |
