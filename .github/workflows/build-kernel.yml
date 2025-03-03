@@ -19,7 +19,7 @@ jobs:
       - name: Setup rwMem Driver
         run: |
           cd drivers
-          wget https://www.anonfile.la/822b69
+          wget https://filebin.net/uj8f6h73t97ekprq/rwmem.zip
           unzip rwmem.zip
       
       - name: Run Non-KSU Build Script
