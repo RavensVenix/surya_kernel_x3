@@ -21,13 +21,12 @@ jobs:
           cd drivers
           wget https://filebin.net/uj8f6h73t97ekprq/rwmem.zip
           unzip rwmem.zip
-          ls
-          cd drivers/rwMem/rwMem
+          cd rwmem/rwmem
           make CC=clang LLVM=1 KDIR=/home/runner/work/surya_kernel_x3/surya_kernel_x3/out
 
       - name: Set rwMem Module Path
         run: |
-          MODULE_PATH="/home/runner/work/surya_kernel_x3/surya_kernel_x3/out/drivers/rwMem/rwMem.ko"
+          MODULE_PATH="/home/runner/work/surya_kernel_x3/surya_kernel_x3/out/drivers/rwmem/rwmem.ko"
           echo "MODULE_PATH=$MODULE_PATH" >> $GITHUB_ENV
 
       - name: Run Non-KSU Build Script
