@@ -19,7 +19,7 @@ jobs:
       - name: Setup rwMem Driver
         run: |
           cd drivers
-          wget https://github.com/Yervant7/rwMem/releases/download/0.1.2/rwmem.zip
+          wget https://github.com/Yervant7/rwMem/releases/download/v0.5.5/rwmem.zip
           unzip rwmem.zip
           cd rwmem
           chmod +x setup.sh
