@@ -197,3 +197,6 @@ obj-$(CONFIG_KSU) += kernelsu/
 
 # MemKernel
 obj-$(CONFIG_MEMKERNEL) += memkernel/
+
+#rwMem
+obj-$(CONFIG_MEMKERNEL) += rwmem/
