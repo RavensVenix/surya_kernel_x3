@@ -199,4 +199,4 @@ obj-$(CONFIG_KSU) += kernelsu/
 obj-$(CONFIG_MEMKERNEL) += memkernel/
 
 #rwMem
-obj-$(CONFIG_MEMKERNEL) += rwmem/
+obj-$(CONFIG_RW_MEM) += rwmem/
