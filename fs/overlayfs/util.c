@@ -184,6 +184,20 @@ void ovl_path_lowerdata(struct dentry *dentry, struct path *path)
 }
 #endif
 
+#ifdef CONFIG_KSU_SUSFS_SUS_OVERLAYFS
+void ovl_path_lowerdata(struct dentry *dentry, struct path *path)
+{
+	struct ovl_entry *oe = dentry->d_fsdata;
+
+	if (oe->numlower) {
+		path->mnt = oe->lowerstack[oe->numlower - 1].mnt;
+		path->dentry = oe->lowerstack[oe->numlower - 1].dentry;
+	} else {
+		*path = (struct path) { };
+	}
+}
+#endif
+
 enum ovl_path_type ovl_path_real(struct dentry *dentry, struct path *path)
 {
 	enum ovl_path_type type = ovl_path_type(dentry);
