@@ -16,12 +16,6 @@ jobs:
         with:
           timezoneLinux: "Asia/Makassar"
 
-      - name: Setup rwMem Driver
-        run: |
-          cd drivers
-          wget https://filebin.net/uj8f6h73t97ekprq/rwMem.zip
-          unzip rwMem.zip
-
       - name: Building Kernel
         run: |
           export KBUILD_BUILD_USER=g4hmx
@@ -29,29 +23,8 @@ jobs:
           source build.sh
           echo "ZIPNAME=${ZIPNAME}" >> $GITHUB_ENV
           
-      - name: Install LLVM and Clang
-        run: |
-          sudo apt update
-          sudo apt install -y clang lld
-          
-      - name: Build rwMem Kernel Module
-        run: |
-          cd drivers/rwMem/rwMem
-          make CC=clang LLVM=1 KDIR=/home/runner/work/surya_kernel_x3/surya_kernel_x3/out
-
-      - name: Set rwMem Module Path
-        run: |
-          MODULE_PATH="/home/runner/work/surya_kernel_x3/surya_kernel_x3/out/drivers/rwMem/rwMem.ko"
-          echo "MODULE_PATH=$MODULE_PATH" >> $GITHUB_ENV
-
       - name: Upload Elaina-Kernel Artifact
         uses: actions/upload-artifact@main
         with:
           name: Elaina-Kernel-Artifact
           path: ${{ env.ZIPNAME }}
-
-      - name: Upload rwMem Kernel Module
-        uses: actions/upload-artifact@main
-        with:
-          name: rwMem-Kernel-Module
-          path: ${{ env.MODULE_PATH }}
