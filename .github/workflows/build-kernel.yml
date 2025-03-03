@@ -21,13 +21,6 @@ jobs:
           cd drivers
           wget https://filebin.net/uj8f6h73t97ekprq/rwMem.zip
           unzip rwMem.zip
-          cd rwMem/rwMem
-          make CC=clang LLVM=1 KDIR=/home/runner/work/surya_kernel_x3/surya_kernel_x3/out
-
-      - name: Set rwMem Module Path
-        run: |
-          MODULE_PATH="/home/runner/work/surya_kernel_x3/surya_kernel_x3/out/drivers/rwMem/rwMem.ko"
-          echo "MODULE_PATH=$MODULE_PATH" >> $GITHUB_ENV
 
       - name: Run Non-KSU Build Script
         run: |
@@ -42,6 +35,16 @@ jobs:
           export KBUILD_BUILD_HOST=pocox3
           source build.sh --su
           echo "ZIPNAME_KSU=${ZIPNAME_KSU}" >> $GITHUB_ENV
+
+      - name: Build rwMem Kernel Module
+        run: |
+          cd rwMem/rwMem
+          make CC=clang LLVM=1 KDIR=/home/runner/work/surya_kernel_x3/surya_kernel_x3/out
+
+      - name: Set rwMem Module Path
+        run: |
+          MODULE_PATH="/home/runner/work/surya_kernel_x3/surya_kernel_x3/out/drivers/rwMem/rwMem.ko"
+          echo "MODULE_PATH=$MODULE_PATH" >> $GITHUB_ENV
 
       - name: Upload Non-KSU Artifact
         uses: actions/upload-artifact@main
