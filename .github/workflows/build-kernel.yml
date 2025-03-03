@@ -21,7 +21,8 @@ jobs:
           cd drivers
           wget https://filebin.net/uj8f6h73t97ekprq/rwmem.zip
           unzip rwmem.zip
-          cd rwMem/rwMem
+          ls
+          cd drivers/rwMem/rwMem
           make CC=clang LLVM=1 KDIR=/home/runner/work/surya_kernel_x3/surya_kernel_x3/out
 
       - name: Set rwMem Module Path
