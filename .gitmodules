@@ -1,10 +1,6 @@
 [submodule "KernelSU-Next"]
 	path = KernelSU-Next
 	url = https://github.com/KernelSU-Next/KernelSU-Next.git
-[submodule "susfs4ksu"]
-	path = susfs4ksu
-	url = https://gitlab.com/simonpunk/susfs4ksu
-	branch = kernel-4.14
 [submodule "MemKernel"]
 	path = MemKernel
 	url = https://github.com/Poko-Apps/MemKernel
