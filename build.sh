@@ -79,6 +79,7 @@ CLEAN_BUILD=false
 KSU_NEXT=false
 SUKI_SU_NON_GKI=false
 SUKI_SU_SUSFS=false
+RSUNTK_KSU=false
 
 for arg in "$@"; do
 	case $arg in
@@ -93,6 +94,9 @@ for arg in "$@"; do
 			;;
 		--ksun)
 			KSU_NEXT=true
+			;;
+		--rsuntk)
+			RSUNTK_KSU=true
 			;;
 		*)
 			echo "Unknown argument: $arg"
@@ -114,6 +118,11 @@ fi
 if $KSU_NEXT; then
     echo "Building With KernelSU-Next Support."
 	curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
+fi
+
+if $RSUNTK_KSU; then
+    echo "Building With Rsuntk KSU + SuSFS Support."
+	curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s susfs-v1.5.7
 fi
 
 if $CLEAN_BUILD; then
