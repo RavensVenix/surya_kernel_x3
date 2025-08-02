@@ -122,7 +122,7 @@ fi
 
 if $RSUNTK_KSU; then
     echo "Building With Rsuntk KSU + SuSFS Support."
-	curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s susfs-v1.5.7
+	curl -LSs "https://raw.githubusercontent.com/rsuntk/KernelSU/main/kernel/setup.sh" | bash -s 46d22cec90bec282a8369295dfb003732759f4fa
 fi
 
 if $CLEAN_BUILD; then
