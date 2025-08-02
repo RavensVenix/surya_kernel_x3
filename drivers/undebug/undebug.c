@@ -10,8 +10,8 @@
 #include <linux/string.h>
 #include <linux/mutex.h>
 #include <linux/sched.h>
-#include <linux/ftrace.h>
 #include <linux/version.h>
+#include <linux/ftrace.h>
 
 MODULE_LICENSE("GPL");
 MODULE_AUTHOR("tfoldi <tfoldi@nospam>");
@@ -38,25 +38,20 @@ static unsigned long lookup_name(const char *name)
 #define lookup_name kallsyms_lookup_name
 #endif
 
-/* Compatibility flags for older kernels */
 #ifndef FTRACE_OPS_FL_SAVE_REGS
-#define FTRACE_OPS_FL_SAVE_REGS              (1 << 0)
+#define FTRACE_OPS_FL_SAVE_REGS (1 << 0)
 #endif
-
 #ifndef FTRACE_OPS_FL_SAVE_REGS_IF_SUPPORTED
 #define FTRACE_OPS_FL_SAVE_REGS_IF_SUPPORTED FTRACE_OPS_FL_SAVE_REGS
 #endif
-
 #ifndef FTRACE_OPS_FL_RECURSION_SAFE
-#define FTRACE_OPS_FL_RECURSION_SAFE         (1 << 1)
+#define FTRACE_OPS_FL_RECURSION_SAFE (1 << 1)
 #endif
-
 #ifndef FTRACE_OPS_FL_RECURSION
-#define FTRACE_OPS_FL_RECURSION              FTRACE_OPS_FL_RECURSION_SAFE
+#define FTRACE_OPS_FL_RECURSION FTRACE_OPS_FL_RECURSION_SAFE
 #endif
-
 #ifndef FTRACE_OPS_FL_IPMODIFY
-#define FTRACE_OPS_FL_IPMODIFY               (1 << 2)
+#define FTRACE_OPS_FL_IPMODIFY (1 << 2)
 #endif
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
@@ -81,13 +76,11 @@ static int fh_resolve_hook_address(struct ftrace_hook *hook)
 		pr_err("UNDEBUG: unresolved symbol: %s\n", hook->name);
 		return -ENOENT;
 	}
-
 #if USE_FENTRY_OFFSET
 	*((unsigned long *)hook->original) = hook->address + MCOUNT_INSN_SIZE;
 #else
 	*((unsigned long *)hook->original) = hook->address;
 #endif
-
 	return 0;
 }
 
@@ -96,7 +89,6 @@ static void notrace fh_ftrace_thunk(unsigned long ip, unsigned long parent_ip,
 {
 	struct pt_regs *regs = ftrace_get_regs(fregs);
 	struct ftrace_hook *hook = container_of(ops, struct ftrace_hook, ops);
-
 #if USE_FENTRY_OFFSET
 #ifdef CONFIG_ARM64
 	regs->pc = (unsigned long)hook->function;
@@ -104,12 +96,13 @@ static void notrace fh_ftrace_thunk(unsigned long ip, unsigned long parent_ip,
 	regs->ip = (unsigned long)hook->function;
 #endif
 #else
-	if (!within_module(parent_ip, THIS_MODULE))
+	if (!within_module(parent_ip, THIS_MODULE)) {
 #ifdef CONFIG_ARM64
 		regs->pc = (unsigned long)hook->function;
 #else
 		regs->ip = (unsigned long)hook->function;
 #endif
+	}
 #endif
 }
 
@@ -131,7 +124,6 @@ static int fh_install_hook(struct ftrace_hook *hook)
 		ftrace_set_filter_ip(&hook->ops, hook->address, 1, 0);
 		return err;
 	}
-
 	return 0;
 }
 
@@ -163,7 +155,7 @@ static void fh_remove_hooks(struct ftrace_hook *hooks, size_t count)
 static void parse_hide_maps(void)
 {
 	char *str, *token;
-	int i = 0;
+	int i;
 
 	mutex_lock(&hide_maps_lock);
 	for (i = 0; i < hide_maps_count; i++) {
@@ -244,17 +236,15 @@ static asmlinkage int hooked_proc_pid_status(struct seq_file *m, struct pid_name
 	{ .name = SYSCALL_NAME(_name), .function = (_function), .original = (_original) }
 
 static struct ftrace_hook hooks[] = {
-    HOOK("proc_pid_status", hooked_proc_pid_status, &orig_proc_pid_status),
-    HOOK("show_map_vma", handle_show_map_vma, &orig_show_map_vma),
+	HOOK("proc_pid_status", hooked_proc_pid_status, &orig_proc_pid_status),
+	HOOK("show_map_vma", handle_show_map_vma, &orig_show_map_vma),
 };
 
 static int hide_maps_proc_handler(struct ctl_table *table, int write,
                                   void __user *buffer, size_t *lenp, loff_t *ppos)
 {
 	int ret = proc_dostring(table, write, buffer, lenp, ppos);
-	if (!ret && write) {
-		parse_hide_maps();
-	}
+	if (!ret && write) parse_hide_maps();
 	return ret;
 }
 
