@@ -61,6 +61,18 @@ static inline struct pt_regs *ftrace_get_regs(struct ftrace_regs *fregs) { retur
 
 #define USE_FENTRY_OFFSET 0
 
+#ifndef HAVE_FTRACE_OPS_DEFINED
+#define HAVE_FTRACE_OPS_DEFINED
+
+struct ftrace_ops {
+	unsigned long flags;
+	void (*func)(unsigned long ip, unsigned long parent_ip,
+	             struct ftrace_ops *op, struct ftrace_regs *regs);
+	const char *filter;
+};
+
+#endif
+
 struct ftrace_hook {
 	const char *name;
 	void *function;
