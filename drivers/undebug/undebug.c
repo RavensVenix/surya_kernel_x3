@@ -38,10 +38,33 @@ static unsigned long lookup_name(const char *name)
 #define lookup_name kallsyms_lookup_name
 #endif
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
-#define FTRACE_OPS_FL_RECURSION FTRACE_OPS_FL_RECURSION_SAFE
+/* Compatibility flags for older kernels */
+#ifndef FTRACE_OPS_FL_SAVE_REGS
+#define FTRACE_OPS_FL_SAVE_REGS              (1 << 0)
+#endif
+
+#ifndef FTRACE_OPS_FL_SAVE_REGS_IF_SUPPORTED
 #define FTRACE_OPS_FL_SAVE_REGS_IF_SUPPORTED FTRACE_OPS_FL_SAVE_REGS
 #endif
+
+#ifndef FTRACE_OPS_FL_RECURSION_SAFE
+#define FTRACE_OPS_FL_RECURSION_SAFE         (1 << 1)
+#endif
+
+#ifndef FTRACE_OPS_FL_RECURSION
+#define FTRACE_OPS_FL_RECURSION              FTRACE_OPS_FL_RECURSION_SAFE
+#endif
+
+#ifndef FTRACE_OPS_FL_IPMODIFY
+#define FTRACE_OPS_FL_IPMODIFY               (1 << 2)
+#endif
+
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
+#define ftrace_regs pt_regs
+static inline struct pt_regs *ftrace_get_regs(struct ftrace_regs *fregs) { return fregs; }
+#endif
+
+#define USE_FENTRY_OFFSET 0
 
 struct ftrace_hook {
 	const char *name;
@@ -50,13 +73,6 @@ struct ftrace_hook {
 	unsigned long address;
 	struct ftrace_ops ops;
 };
-
-#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 11, 0)
-#define ftrace_regs pt_regs
-static inline struct pt_regs *ftrace_get_regs(struct ftrace_regs *fregs) { return fregs; }
-#endif
-
-#define USE_FENTRY_OFFSET 0
 
 static int fh_resolve_hook_address(struct ftrace_hook *hook)
 {
@@ -82,10 +98,18 @@ static void notrace fh_ftrace_thunk(unsigned long ip, unsigned long parent_ip,
 	struct ftrace_hook *hook = container_of(ops, struct ftrace_hook, ops);
 
 #if USE_FENTRY_OFFSET
+#ifdef CONFIG_ARM64
 	regs->pc = (unsigned long)hook->function;
 #else
+	regs->ip = (unsigned long)hook->function;
+#endif
+#else
 	if (!within_module(parent_ip, THIS_MODULE))
+#ifdef CONFIG_ARM64
 		regs->pc = (unsigned long)hook->function;
+#else
+		regs->ip = (unsigned long)hook->function;
+#endif
 #endif
 }
 
@@ -125,7 +149,6 @@ static int fh_install_hooks(struct ftrace_hook *hooks, size_t count)
 		if (err) goto error;
 	}
 	return 0;
-
 error:
 	while (i--) fh_remove_hook(&hooks[i]);
 	return err;
@@ -259,7 +282,7 @@ static struct ctl_table_header *undebug_sysctl;
 
 static int __init undebug_init(void)
 {
-	int err = fh_install_hooks(hooks, ARRAY_SIZE(hooks));
+	int err = fh_install_hooks(hooks, sizeof(hooks) / sizeof(hooks[0]));
 	if (err) return err;
 
 	undebug_sysctl = register_sysctl_table(undebug_root);
@@ -272,7 +295,7 @@ late_initcall(undebug_init);
 
 static void __exit undebug_exit(void)
 {
-	fh_remove_hooks(hooks, ARRAY_SIZE(hooks));
+	fh_remove_hooks(hooks, sizeof(hooks) / sizeof(hooks[0]));
 	unregister_sysctl_table(undebug_sysctl);
 	pr_info("UNDEBUG: module unloaded.\n");
 }
