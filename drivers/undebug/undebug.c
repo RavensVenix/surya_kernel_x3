@@ -244,8 +244,8 @@ static asmlinkage int hooked_proc_pid_status(struct seq_file *m, struct pid_name
 	{ .name = SYSCALL_NAME(_name), .function = (_function), .original = (_original) }
 
 static struct ftrace_hook hooks[] = {
-	HOOK("proc_pid_status", hooked_proc_pid_status, &orig_proc_pid_status),
-	HOOK("show_map_vma", handle_show_map_vma, &orig_show_map_vma),
+    HOOK("proc_pid_status", hooked_proc_pid_status, &orig_proc_pid_status),
+    HOOK("show_map_vma", handle_show_map_vma, &orig_show_map_vma),
 };
 
 static int hide_maps_proc_handler(struct ctl_table *table, int write,
@@ -282,7 +282,7 @@ static struct ctl_table_header *undebug_sysctl;
 
 static int __init undebug_init(void)
 {
-	int err = fh_install_hooks(hooks, sizeof(hooks) / sizeof(hooks[0]));
+	int err = fh_install_hooks(hooks, ARRAY_SIZE(hooks));
 	if (err) return err;
 
 	undebug_sysctl = register_sysctl_table(undebug_root);
@@ -295,7 +295,7 @@ late_initcall(undebug_init);
 
 static void __exit undebug_exit(void)
 {
-	fh_remove_hooks(hooks, sizeof(hooks) / sizeof(hooks[0]));
+	fh_remove_hooks(hooks, ARRAY_SIZE(hooks));
 	unregister_sysctl_table(undebug_sysctl);
 	pr_info("UNDEBUG: module unloaded.\n");
 }
