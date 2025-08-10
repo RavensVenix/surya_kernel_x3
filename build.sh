@@ -107,12 +107,12 @@ done
 
 if $SUKI_SU_NON_GKI; then
     echo "Building With SukiSU-Ultra Support."
-	curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/setup.sh" | bash -s nongki
+	curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s nongki
 fi
 
 if $SUKI_SU_SUSFS; then
     echo "Building With SukiSU-Ultra + SuSFS Support."
-	curl -LSs "https://raw.githubusercontent.com/ShirkNeko/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-stable
+	curl -LSs "https://raw.githubusercontent.com/SukiSU-Ultra/SukiSU-Ultra/main/kernel/setup.sh" | bash -s susfs-main
 fi
 
 if $KSU_NEXT; then
