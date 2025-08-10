@@ -20,7 +20,7 @@ jobs:
         run: |
           export KBUILD_BUILD_USER=RavensVenix
           export KBUILD_BUILD_HOST=Github
-          source build.sh --sukisu
+          source build.sh --sukisu-susfs
           echo "ZIPNAME=${ZIPNAME}" >> $GITHUB_ENV
 
       - name: Upload Kernel
