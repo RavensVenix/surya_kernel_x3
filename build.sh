@@ -117,7 +117,7 @@ fi
 
 if $KSU_NEXT; then
     echo "Building With KernelSU-Next Support."
-	curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next-susfs/kernel/setup.sh" | bash -s next-susfs
+	curl -LSs "https://raw.githubusercontent.com/KernelSU-Next/KernelSU-Next/next/kernel/setup.sh" | bash -
 fi
 
 if $RSUNTK_KSU; then
